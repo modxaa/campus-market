@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Campus Marketplace | Buy & Sell on Campus
+    </title>
+
+    <meta
+        name="description"
+        content="Campus Marketplace - Buy, sell and discover products from students on campus."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="homepage">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="site-header">
+
+        <div class="site-header-inner">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="{{ url_for('home') }}"
+                class="site-logo"
+            >
+                Campus<span>Market</span>
+            </a>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="site-nav">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="active"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}"
+                >
+                    Shop
+                </a>
+
+
+                <a
+                    href="{{ url_for('trending') }}"
+                >
+                    Trending
+                </a>
+
+
+                <a
+                    href="{{ url_for('register') }}"
+                >
+                    Sell
+                </a>
+
+            </nav>
+
+
+            <!-- ACCOUNT ACTIONS -->
+
+            <div class="homepage-header-actions">
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="homepage-login"
+                >
+                    Login
+                </a>
+
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="homepage-join"
+                >
+                    Join
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             HERO
+             ================================================= -->
+
+        <section class="homepage-hero">
+
+
+            <div class="homepage-hero-content">
+
+
+                <p class="homepage-eyebrow">
+                    THE STUDENT MARKETPLACE
+                </p>
+
+
+                <h1>
+                    Everything you need.
+                    <span>
+                        Right on campus.
+                    </span>
+                </h1>
+
+
+                <p class="homepage-hero-description">
+                    Discover products, services and campus
+                    hustles from students around you.
+                </p>
+
+
+                <!-- SEARCH -->
+
+                <form
+                    action="{{ url_for('products') }}"
+                    method="GET"
+                    class="homepage-search"
+                >
+
+                    <span
+                        class="homepage-search-icon"
+                        aria-hidden="true"
+                    >
+                        ⌕
+                    </span>
+
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search products, services..."
+                        aria-label="Search products"
+                    >
+
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
+
+
+                <!-- HERO ACTIONS -->
+
+                <div class="homepage-hero-actions">
+
+
+                    <a
+                        href="{{ url_for('products') }}"
+                        class="homepage-primary-button"
+                    >
+                        Explore Marketplace
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('register') }}"
+                        class="homepage-secondary-button"
+                    >
+                        Start Selling
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 HERO VISUAL
+                 ================================================= -->
+
+            <div class="homepage-hero-visual">
+
+
+                <div class="homepage-hero-main-card">
+
+
+                    <p class="homepage-card-label">
+                        CAMPUS MARKET
+                    </p>
+
+
+                    <h2>
+                        Buy.
+                        <br>
+                        Sell.
+                        <br>
+                        Connect.
+                    </h2>
+
+
+                    <div class="homepage-card-line"></div>
+
+
+                    <p>
+                        A marketplace built
+                        for students.
+                    </p>
+
+
+                </div>
+
+
+                <div
+                    class="homepage-floating-card homepage-floating-top"
+                >
+
+                    <span>
+                        01
+                    </span>
+
+                    <strong>
+                        Discover
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="homepage-floating-card homepage-floating-bottom"
+                >
+
+                    <span>
+                        02
+                    </span>
+
+                    <strong>
+                        Connect
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CATEGORIES
+             ================================================= -->
+
+        <section class="categories-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        BROWSE
+                    </span>
+
+                    <h2>
+                        Shop by category
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('products') }}"
+                    class="text-link"
+                >
+                    View all
+                </a>
+
+            </div>
+
+
+            <div class="category-list">
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Clothing"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        01
+                    </span>
+
+                    <span class="category-name">
+                        Clothing
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Food"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        02
+                    </span>
+
+                    <span class="category-name">
+                        Food
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Electronics"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        03
+                    </span>
+
+                    <span class="category-name">
+                        Electronics
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Shoes"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        04
+                    </span>
+
+                    <span class="category-name">
+                        Shoes
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Beauty"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        05
+                    </span>
+
+                    <span class="category-name">
+                        Beauty
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}?search=Services"
+                    class="category-card"
+                >
+
+                    <span class="category-number">
+                        06
+                    </span>
+
+                    <span class="category-name">
+                        Services
+                    </span>
+
+                    <span class="category-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TRENDING PRODUCTS
+             ================================================= -->
+
+        <section class="products-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        CAMPUS TRENDING
+                    </span>
+
+                    <h2>
+                        Trending on campus
+                    </h2>
+
+                    <p class="trending-intro">
+                        Popular products, active listings
+                        and products selected by our admins.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('trending') }}"
+                    class="text-link"
+                >
+                    View trending →
+                </a>
+
+            </div>
+
+
+            {% if trending_products %}
+
+                <div class="product-grid">
+
+                    {% for product in trending_products %}
+
+                        <article class="product-card">
+
+
+                            <a
+                                href="{{ url_for(
+                                    'product_details',
+                                    product_id=product['id']
+                                ) }}"
+                                class="product-image-wrapper"
+                            >
+
+                                {% if product["image"] %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='uploads/' + product['image']
+                                        ) }}"
+                                        alt="{{ product['name'] }}"
+                                        class="product-image"
+                                    >
+
+                                {% else %}
+
+                                    <div
+                                        class="product-image-placeholder"
+                                    >
+                                        <span>
+                                            NO IMAGE
+                                        </span>
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if product["featured"] %}
+
+                                    <span
+                                        class="product-status-badge"
+                                    >
+                                        FEATURED
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="product-status-badge"
+                                    >
+                                        TRENDING
+                                    </span>
+
+                                {% endif %}
+
+                            </a>
+
+
+                            <div class="product-info">
+
+                                <div class="product-meta">
+
+                                    <span>
+                                        {{ product["category"] }}
+                                    </span>
+
+                                    <span>
+                                        {{ product["location"] }}
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    {{ product["name"] }}
+                                </h3>
+
+
+                                <p class="product-description">
+                                    {{ product["description"] }}
+                                </p>
+
+
+                                <div class="product-bottom">
+
+                                    <strong class="product-price">
+
+                                        ${{ "%.2f"|format(
+                                            product["price"]
+                                        ) }}
+
+                                    </strong>
+
+
+                                    <a
+                                        href="{{ url_for(
+                                            'product_details',
+                                            product_id=product['id']
+                                        ) }}"
+                                        class="product-link"
+                                    >
+                                        View Product
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="products-footer">
+
+                    <a
+                        href="{{ url_for('trending') }}"
+                        class="outline-button"
+                    >
+                        Explore Trending
+                    </a>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-marketplace">
+
+                    <div class="empty-marketplace-number">
+                        01
+                    </div>
+
+                    <h3>
+                        The marketplace is waiting for you.
+                    </h3>
+
+                    <p>
+                        Be the first student to list a product
+                        and start selling on campus.
+                    </p>
+
+                    <a
+                        href="{{ url_for('register') }}"
+                        class="primary-button"
+                    >
+                        Start Selling
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =================================================
+             SELLER CTA
+             ================================================= -->
+
+        <section class="seller-section">
+
+            <div class="seller-content">
+
+                <span class="section-eyebrow">
+                    FOR STUDENT SELLERS
+                </span>
+
+
+                <h2>
+                    Turn your campus hustle
+                    into a marketplace.
+                </h2>
+
+
+                <p>
+                    Have clothes, food, electronics, services
+                    or anything else students need?
+
+                    Put it in front of your campus community.
+                </p>
+
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="light-button"
+                >
+                    Start selling
+                </a>
+
+            </div>
+
+
+            <div class="seller-number">
+                02
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FINAL CTA
+             ================================================= -->
+
+        <section class="final-cta">
+
+            <span class="section-eyebrow">
+                CAMPUS MARKETPLACE
+            </span>
+
+
+            <h2>
+                Your campus.
+                <br>
+                Your market.
+            </h2>
+
+
+            <p>
+                Buy smarter. Sell easier.
+                Connect locally.
+            </p>
+
+
+            <div class="final-cta-actions">
+
+                <a
+                    href="{{ url_for('products') }}"
+                    class="primary-button"
+                >
+                    Browse Marketplace
+                </a>
+
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="secondary-button"
+                >
+                    Create Account
+                </a>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-main">
+
+
+            <div class="footer-brand">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="logo footer-logo"
+                >
+                    Campus
+
+                    <span>
+                        Marketplace
+                    </span>
+
+                </a>
+
+
+                <p>
+                    A marketplace built for
+                    students, by students.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+
+                <div>
+
+                    <span class="footer-title">
+                        Marketplace
+                    </span>
+
+
+                    <a
+                        href="{{ url_for('products') }}"
+                    >
+                        Shop
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('trending') }}"
+                    >
+                        Trending
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('register') }}"
+                    >
+                        Sell
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <span class="footer-title">
+                        Account
+                    </span>
+
+
+                    <a
+                        href="{{ url_for('login') }}"
+                    >
+                        Login
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('register') }}"
+                    >
+                        Register
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 Campus Marketplace
+            </span>
+
+
+            <span>
+                Built for campus commerce.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

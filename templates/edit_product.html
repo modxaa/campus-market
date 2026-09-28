@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Product | Campus Market</title>
+
+    <meta
+        name="description"
+        content="Edit your product listing on Campus Market."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="sell-page-body">
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="site-header">
+
+    <div class="site-header-inner">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="site-logo"
+        >
+            Campus<span>Market</span>
+        </a>
+
+
+        <nav class="site-nav">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('add_product') }}">
+                Sell
+            </a>
+
+        </nav>
+
+
+        <div class="homepage-header-actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="homepage-login"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="homepage-join"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     EDIT PRODUCT
+     ========================================================= -->
+
+<main class="sell-page">
+
+
+    <!-- HERO -->
+
+    <section class="sell-hero">
+
+        <div class="sell-hero-inner">
+
+            <span class="sell-eyebrow">
+                SELLER CENTER
+            </span>
+
+            <h1>
+                Edit your listing.
+            </h1>
+
+            <p>
+                Update your product information, replace its image
+                or change how buyers can contact you.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORM CONTENT
+         ===================================================== -->
+
+    <section class="sell-content">
+
+        <div class="sell-layout">
+
+
+            <!-- =================================================
+                 FORM
+                 ================================================= -->
+
+            <div class="sell-form-card">
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    <input type="hidden"
+       name="csrf_token"
+       value="{{ csrf_token() }}">
+                >
+
+
+                    <!-- PRODUCT INFORMATION -->
+
+                    <div class="sell-form-section">
+
+                        <div class="sell-section-number">
+                            01
+                        </div>
+
+                        <div>
+
+                            <span class="sell-section-eyebrow">
+                                LISTING
+                            </span>
+
+                            <h2>
+                                Product information
+                            </h2>
+
+                            <p>
+                                Keep your listing accurate and up to date.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="sell-field">
+
+                        <label for="name">
+                            Product name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ product['name'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PRICE + CATEGORY -->
+
+                    <div class="sell-field-row">
+
+                        <div class="sell-field">
+
+                            <label for="price">
+                                Price
+                            </label>
+
+                            <div class="sell-input-prefix">
+
+                                <span>
+                                    $
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    value="{{ product['price'] }}"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-field">
+
+                            <label for="category">
+                                Category
+                            </label>
+
+                            <select
+                                id="category"
+                                name="category"
+                                required
+                            >
+
+                                <option value="Clothing"
+                                    {% if product['category'] == 'Clothing' %}selected{% endif %}>
+                                    Clothing
+                                </option>
+
+                                <option value="Food"
+                                    {% if product['category'] == 'Food' %}selected{% endif %}>
+                                    Food
+                                </option>
+
+                                <option value="Electronics"
+                                    {% if product['category'] == 'Electronics' %}selected{% endif %}>
+                                    Electronics
+                                </option>
+
+                                <option value="Beauty"
+                                    {% if product['category'] == 'Beauty' %}selected{% endif %}>
+                                    Beauty
+                                </option>
+
+                                <option value="Shoes"
+                                    {% if product['category'] == 'Shoes' %}selected{% endif %}>
+                                    Shoes
+                                </option>
+
+                                <option value="Books"
+                                    {% if product['category'] == 'Books' %}selected{% endif %}>
+                                    Books
+                                </option>
+
+                                <option value="Services"
+                                    {% if product['category'] == 'Services' %}selected{% endif %}>
+                                    Services
+                                </option>
+
+                                <option value="Accessories"
+                                    {% if product['category'] == 'Accessories' %}selected{% endif %}>
+                                    Accessories
+                                </option>
+
+                                <option value="Other"
+                                    {% if product['category'] == 'Other' %}selected{% endif %}>
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CURRENT IMAGE -->
+
+                    <div class="sell-field">
+
+                        <label>
+                            Current product image
+                        </label>
+
+                        {% if product['image'] %}
+
+                            <div class="edit-current-image">
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='uploads/' + product['image']
+                                    ) }}"
+                                    alt="{{ product['name'] }}"
+                                >
+
+                                <div class="edit-image-label">
+                                    Current image
+                                </div>
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="edit-no-image">
+                                NO CURRENT IMAGE
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- REPLACE IMAGE -->
+
+                    <div class="sell-field">
+
+                        <label for="image">
+                            Replace product image
+                        </label>
+
+                        <div class="sell-upload-box">
+
+                            <input
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
+                            >
+
+                            <div class="sell-upload-content">
+
+                                <div class="sell-upload-icon">
+                                    +
+                                </div>
+
+                                <strong>
+                                    Choose a new image
+                                </strong>
+
+                                <span>
+                                    Leave this empty if you want to
+                                    keep the current image.
+                                </span>
+
+                                <small>
+                                    JPG, PNG, GIF or WEBP
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="sell-field">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="6"
+                            required
+                        >{{ product['description'] }}</textarea>
+
+                    </div>
+
+
+                    <!-- CONTACT INFORMATION -->
+
+                    <div class="sell-form-section sell-form-section-contact">
+
+                        <div class="sell-section-number">
+                            02
+                        </div>
+
+                        <div>
+
+                            <span class="sell-section-eyebrow">
+                                CONTACT
+                            </span>
+
+                            <h2>
+                                Contact information
+                            </h2>
+
+                            <p>
+                                Update where buyers can find you and
+                                how they can contact you.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCATION + CONTACT -->
+
+                    <div class="sell-field-row">
+
+                        <div class="sell-field">
+
+                            <label for="location">
+                                Campus / location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                value="{{ product['location'] }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="sell-field">
+
+                            <label for="contact">
+                                WhatsApp number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="contact"
+                                name="contact"
+                                value="{{ product['contact'] }}"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SAVE -->
+
+                    <div class="sell-submit">
+
+                        <button
+                            type="submit"
+                            class="sell-publish-button"
+                        >
+                            Save changes
+                        </button>
+
+                        <p>
+                            Your existing listing will be updated
+                            when you save these changes.
+                        </p>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIDE PANEL
+                 ================================================= -->
+
+            <aside class="sell-side">
+
+                <div class="sell-side-card">
+
+                    <span class="sell-eyebrow">
+                        EDIT LISTING
+                    </span>
+
+                    <h2>
+                        Keep your products fresh.
+                    </h2>
+
+                    <p>
+                        Accurate information helps buyers understand
+                        exactly what you're offering.
+                    </p>
+
+
+                    <div class="sell-tips">
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                01
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Check your price
+                                </strong>
+
+                                <p>
+                                    Make sure the current price is
+                                    still accurate.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                02
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Update your photos
+                                </strong>
+
+                                <p>
+                                    Replace an old image if your
+                                    product looks different.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                03
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Keep contact details current
+                                </strong>
+
+                                <p>
+                                    Make sure buyers can still reach
+                                    you through WhatsApp.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <div class="edit-product-back">
+
+            <a href="{{ url_for('my_products') }}">
+                ← Back to My Products
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+
+        <div class="footer-brand">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="site-logo"
+            >
+                Campus<span>Market</span>
+            </a>
+
+            <p>
+                Your campus. Your marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Marketplace
+            </h4>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('add_product') }}">
+                Sell
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Account
+            </h4>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Campus Market
+            </h4>
+
+            <p>
+                Connecting students with products,
+                services and opportunities around campus.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Campus Market.
+            All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

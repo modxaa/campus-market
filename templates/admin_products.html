@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Products | Campus Marketplace</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="site-header">
+
+    <div class="main-nav">
+
+
+        <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="logo"
+        >
+
+            <span class="logo-mark">
+                CM
+            </span>
+
+            <span class="logo-text">
+                Campus Marketplace
+            </span>
+
+        </a>
+
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_users') }}">
+                Users
+            </a>
+
+            <a
+                href="{{ url_for('admin_products') }}"
+                class="active"
+            >
+                Products
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="nav-login"
+            >
+                View Site
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="nav-join"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="products-page">
+
+
+    <section class="products-header">
+
+        <span class="section-label">
+            ADMINISTRATION
+        </span>
+
+        <h1>
+            Manage Products
+        </h1>
+
+        <p>
+            Review marketplace listings, monitor activity
+            and decide which products receive featured
+            placement.
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PRODUCT GRID
+    ================================================== -->
+
+    <section class="product-grid admin-product-grid">
+
+
+        {% if products %}
+
+
+            {% for product in products %}
+
+
+                <article class="product-card admin-product-card">
+
+
+                    <!-- PRODUCT IMAGE -->
+
+                    <a
+                        href="{{ url_for(
+                            'product_details',
+                            product_id=product['id']
+                        ) }}"
+                        class="product-image"
+                    >
+
+                        {% if product['image'] %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + product['image']
+                                ) }}"
+                                alt="{{ product['name'] }}"
+                            >
+
+                        {% else %}
+
+                            <div class="product-placeholder">
+                                NO IMAGE
+                            </div>
+
+                        {% endif %}
+
+                    </a>
+
+
+
+                    <!-- PRODUCT INFORMATION -->
+
+                    <div class="product-card-content">
+
+
+                        <div class="admin-product-status">
+
+                            {% if product['featured'] %}
+
+                                <span class="featured-badge">
+                                    FEATURED
+                                </span>
+
+                            {% else %}
+
+                                <span class="standard-badge">
+                                    STANDARD
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+
+                        <div class="product-meta">
+
+                            <span>
+                                {{ product['category'] }}
+                            </span>
+
+                            <span>
+                                {{ product['location'] }}
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+                            {{ product['name'] }}
+                        </h3>
+
+
+
+                        <strong class="product-price">
+
+                            ${{ "%.2f"|format(
+                                product['price']
+                            ) }}
+
+                        </strong>
+
+
+
+                        <p class="product-description">
+
+                            {{ product['description'] }}
+
+                        </p>
+
+
+
+                        <!-- =================================================
+                             PRODUCT ACTIVITY
+                        ================================================== -->
+
+                        <div class="admin-product-stats">
+
+
+                            <div>
+
+                                <span>
+                                    Sales
+                                </span>
+
+                                <strong>
+                                    {{ product['sales_count'] }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Interest
+                                </span>
+
+                                <strong>
+                                    {{ product['interest_count'] }}
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             SELLER INFORMATION
+                        ================================================== -->
+
+                        <div class="admin-product-details">
+
+
+                            <div>
+
+                                <span>
+                                    Seller
+                                </span>
+
+                                <strong>
+                                    {{ product['seller_phone'] }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Contact
+                                </span>
+
+                                <strong>
+                                    {{ product['contact'] }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Listed
+                                </span>
+
+                                <strong>
+                                    {{ product['created_at'] }}
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             ADMIN ACTIONS
+                        ================================================== -->
+
+                        <div class="admin-product-actions">
+
+
+                            <a
+                                href="{{ url_for(
+                                    'product_details',
+                                    product_id=product['id']
+                                ) }}"
+                                class="dashboard-button"
+                            >
+                                View
+                            </a>
+
+
+
+                            <!-- FEATURE / UNFEATURE -->
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'toggle_featured',
+                                    product_id=product['id']
+                                ) }}"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="{{ csrf_token() }}"
+                                >
+
+
+                                {% if product['featured'] %}
+
+                                    <button
+                                        type="submit"
+                                        class="feature-button featured-active"
+                                    >
+                                        Unfeature
+                                    </button>
+
+                                {% else %}
+
+                                    <button
+                                        type="submit"
+                                        class="feature-button"
+                                    >
+                                        Feature
+                                    </button>
+
+                                {% endif %}
+
+                            </form>
+
+
+
+                            <!-- DELETE PRODUCT -->
+
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'delete_product',
+                                    product_id=product['id']
+                                ) }}"
+                                onsubmit="return confirm(
+                                    'Are you sure you want to delete this product?'
+                                );"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="{{ csrf_token() }}"
+                                >
+
+
+                                <button
+                                    type="submit"
+                                    class="delete-button"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-marketplace">
+
+                <div class="empty-marketplace-number">
+                    01
+                </div>
+
+                <h2>
+                    No products yet
+                </h2>
+
+                <p>
+                    There are currently no products
+                    listed on the marketplace.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+        <div class="footer-brand">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="logo"
+            >
+
+                <span class="logo-mark">
+                    CM
+                </span>
+
+                <span class="logo-text">
+                    Campus Marketplace
+                </span>
+
+            </a>
+
+            <p>
+                Your campus. Your marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Admin
+            </h4>
+
+            <a href="{{ url_for('admin_dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_users') }}">
+                Users
+            </a>
+
+            <a href="{{ url_for('admin_products') }}">
+                Products
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Marketplace
+            </h4>
+
+            <a href="{{ url_for('home') }}">
+                Homepage
+            </a>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Campus Marketplace.
+            Admin Panel.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

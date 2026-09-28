@@ -1,0 +1,5 @@
+.env
+__pycache__/
+*.pyc
+campus_market.db
+static/uploads/*

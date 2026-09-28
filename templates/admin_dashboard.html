@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | Campus Market</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+
+<body class="admin-dashboard-page">
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="site-header">
+
+        <div class="site-header-inner">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="site-logo"
+            >
+                Campus<span>Market</span>
+            </a>
+
+
+            <nav class="site-nav">
+
+                <a
+                    href="{{ url_for('admin_dashboard') }}"
+                    class="active"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{{ url_for('admin_users') }}"
+                >
+                    Users
+                </a>
+
+                <a
+                    href="{{ url_for('admin_products') }}"
+                >
+                    Products
+                </a>
+
+                <a
+                    href="{{ url_for('products') }}"
+                >
+                    Marketplace
+                </a>
+
+                <a
+                    href="{{ url_for('logout') }}"
+                >
+                    Logout
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- HERO -->
+    <!-- ================================================= -->
+
+    <main>
+
+        <section class="admin-dashboard-hero">
+
+            <div>
+
+                <p class="admin-eyebrow">
+                    CAMPUS MARKET ADMIN
+                </p>
+
+                <h1>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Monitor marketplace activity,
+                    users, products and growth.
+                </p>
+
+            </div>
+
+
+            <div class="admin-dashboard-actions">
+
+                <a
+                    href="{{ url_for('admin_products') }}"
+                    class="dashboard-main-action"
+                >
+                    Manage Products
+                </a>
+
+                <a
+                    href="{{ url_for('admin_users') }}"
+                    class="dashboard-secondary-action"
+                >
+                    Manage Users
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- MAIN STATISTICS -->
+        <!-- ================================================= -->
+
+        <section class="admin-statistics">
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Total Users
+                </span>
+
+                <strong>
+                    {{ total_users }}
+                </strong>
+
+                <small>
+                    Registered accounts
+                </small>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Sellers
+                </span>
+
+                <strong>
+                    {{ total_sellers }}
+                </strong>
+
+                <small>
+                    Marketplace sellers
+                </small>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Products
+                </span>
+
+                <strong>
+                    {{ total_products }}
+                </strong>
+
+                <small>
+                    Active listings
+                </small>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Featured
+                </span>
+
+                <strong>
+                    {{ featured_products }}
+                </strong>
+
+                <small>
+                    Featured listings
+                </small>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Interest
+                </span>
+
+                <strong>
+                    {{ total_interests }}
+                </strong>
+
+                <small>
+                    Product views
+                </small>
+
+            </div>
+
+
+            <div class="admin-stat-card">
+
+                <span class="admin-stat-label">
+                    Sales
+                </span>
+
+                <strong>
+                    {{ total_sales }}
+                </strong>
+
+                <small>
+                    Recorded sales
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- TODAY'S ACTIVITY -->
+        <!-- ================================================= -->
+
+        <section class="admin-section">
+
+            <div class="admin-section-heading">
+
+                <div>
+
+                    <p class="admin-eyebrow">
+                        TODAY
+                    </p>
+
+                    <h2>
+                        Today's Activity
+                    </h2>
+
+                </div>
+
+                <span>
+                    Live marketplace numbers
+                </span>
+
+            </div>
+
+
+            <div class="today-activity-grid">
+
+
+                <div class="today-activity-card">
+
+                    <div class="today-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <span>
+                            New Users
+                        </span>
+
+                        <strong>
+                            {{ users_today }}
+                        </strong>
+
+                        <small>
+                            Registered today
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="today-activity-card">
+
+                    <div class="today-icon">
+                        🛍️
+                    </div>
+
+                    <div>
+
+                        <span>
+                            New Listings
+                        </span>
+
+                        <strong>
+                            {{ products_today }}
+                        </strong>
+
+                        <small>
+                            Products added today
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="today-activity-card">
+
+                    <div class="today-icon">
+                        📈
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Marketplace Activity
+                        </span>
+
+                        <strong>
+                            {{ users_today + products_today }}
+                        </strong>
+
+                        <small>
+                            New users + listings
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- 7 DAY GROWTH -->
+        <!-- ================================================= -->
+
+        <section class="admin-section">
+
+            <div class="admin-section-heading">
+
+                <div>
+
+                    <p class="admin-eyebrow">
+                        LAST 7 DAYS
+                    </p>
+
+                    <h2>
+                        Marketplace Growth
+                    </h2>
+
+                </div>
+
+                <span>
+                    New accounts and listings
+                </span>
+
+            </div>
+
+
+            <div class="growth-chart-grid">
+
+
+                <!-- USERS GROWTH -->
+
+                <div class="growth-chart-card">
+
+                    <div class="growth-chart-header">
+
+                        <div>
+
+                            <span>
+                                User Growth
+                            </span>
+
+                            <strong>
+                                {{ users_today }}
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            New today
+                        </small>
+
+                    </div>
+
+
+                    <div class="growth-chart">
+
+                        {% for day in user_growth %}
+
+                        <div class="growth-column">
+
+                            <div class="growth-value">
+
+                                {{ day.total }}
+
+                            </div>
+
+
+                            <div class="growth-bar-wrapper">
+
+                                <div
+                                    class="growth-bar user-growth-bar"
+                                    data-value="{{ day.total }}"
+                                ></div>
+
+                            </div>
+
+
+                            <span class="growth-day">
+
+                                {{ day.label }}
+
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRODUCTS GROWTH -->
+
+                <div class="growth-chart-card">
+
+                    <div class="growth-chart-header">
+
+                        <div>
+
+                            <span>
+                                Product Growth
+                            </span>
+
+                            <strong>
+                                {{ products_today }}
+                            </strong>
+
+                        </div>
+
+                        <small>
+                            New today
+                        </small>
+
+                    </div>
+
+
+                    <div class="growth-chart">
+
+                        {% for day in product_growth %}
+
+                        <div class="growth-column">
+
+                            <div class="growth-value">
+
+                                {{ day.total }}
+
+                            </div>
+
+
+                            <div class="growth-bar-wrapper">
+
+                                <div
+                                    class="growth-bar product-growth-bar"
+                                    data-value="{{ day.total }}"
+                                ></div>
+
+                            </div>
+
+
+                            <span class="growth-day">
+
+                                {{ day.label }}
+
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- SELLER / FEATURED PERCENTAGES -->
+        <!-- ================================================= -->
+
+        <section class="admin-percentage-section">
+
+
+            <div class="admin-percentage-card">
+
+                <div>
+
+                    <span>
+                        Seller Rate
+                    </span>
+
+                    <strong>
+                        {{ seller_percentage }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="percentage-bar">
+
+                    <div
+                        class="percentage-fill"
+                        data-width="{{ seller_percentage }}"
+                    ></div>
+
+                </div>
+
+                <small>
+                    Percentage of users registered as sellers
+                </small>
+
+            </div>
+
+
+            <div class="admin-percentage-card">
+
+                <div>
+
+                    <span>
+                        Featured Rate
+                    </span>
+
+                    <strong>
+                        {{ featured_percentage }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="percentage-bar">
+
+                    <div
+                        class="percentage-fill"
+                        data-width="{{ featured_percentage }}"
+                    ></div>
+
+                </div>
+
+                <small>
+                    Percentage of listings currently featured
+                </small>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- CATEGORY ANALYTICS -->
+        <!-- ================================================= -->
+
+        <section class="admin-analytics-section">
+
+
+            <div class="admin-section-heading">
+
+                <div>
+
+                    <p class="admin-eyebrow">
+                        USERS
+                    </p>
+
+                    <h2>
+                        Seller Categories
+                    </h2>
+
+                </div>
+
+                <span>
+                    Registered seller categories
+                </span>
+
+            </div>
+
+
+            <div class="category-chart-card">
+
+                {% if category_data %}
+
+                    {% set max_category =
+                        category_data[0]['total']
+                    %}
+
+
+                    {% for category in category_data %}
+
+                    {% if max_category > 0 %}
+
+                        {% set category_percentage =
+                            (category['total'] / max_category) * 100
+                        %}
+
+                    {% else %}
+
+                        {% set category_percentage = 0 %}
+
+                    {% endif %}
+
+
+                    <div class="category-chart-row">
+
+                        <div class="category-chart-label">
+
+                            <span>
+                                {{ category["category"] }}
+                            </span>
+
+                            <strong>
+                                {{ category["total"] }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="category-chart-track">
+
+                            <div
+                                class="category-chart-fill"
+                                data-width="{{ category_percentage }}"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-chart">
+
+                        <strong>
+                            No category data yet
+                        </strong>
+
+                        <span>
+                            Seller categories will appear here.
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- TOP PRODUCTS -->
+        <!-- ================================================= -->
+
+        <section class="admin-analytics-section">
+
+
+            <div class="admin-section-heading">
+
+                <div>
+
+                    <p class="admin-eyebrow">
+                        PRODUCT ACTIVITY
+                    </p>
+
+                    <h2>
+                        Top Products
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{{ url_for('admin_products') }}"
+                >
+                    View all
+                </a>
+
+            </div>
+
+
+            <div class="product-activity-list">
+
+                {% if top_products %}
+
+                    {% for product in top_products %}
+
+                    <div class="product-activity-row">
+
+                        <div class="product-activity-number">
+
+                            {{ loop.index }}
+
+                        </div>
+
+
+                        <div class="product-activity-info">
+
+                            <strong>
+                                {{ product["name"] }}
+                            </strong>
+
+                            <span>
+
+                                {% if product["featured"] %}
+
+                                    Featured
+
+                                {% else %}
+
+                                    Standard
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="product-activity-stat">
+
+                            <strong>
+                                {{ product["interest_count"] }}
+                            </strong>
+
+                            <span>
+                                Interest
+                            </span>
+
+                        </div>
+
+
+                        <div class="product-activity-stat">
+
+                            <strong>
+                                {{ product["sales_count"] }}
+                            </strong>
+
+                            <span>
+                                Sales
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-chart">
+
+                        <strong>
+                            No products yet
+                        </strong>
+
+                        <span>
+                            Product activity will appear here.
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- RECENT USERS + PRODUCTS -->
+        <!-- ================================================= -->
+
+        <section class="recent-activity-grid">
+
+
+            <!-- RECENT USERS -->
+
+            <div class="recent-activity-card">
+
+                <div class="admin-section-heading">
+
+                    <div>
+
+                        <p class="admin-eyebrow">
+                            USERS
+                        </p>
+
+                        <h2>
+                            Recent Users
+                        </h2>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_users') }}"
+                    >
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div class="recent-list">
+
+                    {% if recent_users %}
+
+                        {% for user in recent_users %}
+
+                        <div class="recent-list-item">
+
+                            <div class="recent-avatar">
+                                👤
+                            </div>
+
+
+                            <div class="recent-item-info">
+
+                                <strong>
+                                    {{ user["phone"] }}
+                                </strong>
+
+                                <span>
+                                    {{ user["category"] or "Buyer" }}
+                                </span>
+
+                            </div>
+
+
+                            <small>
+                                {{ user["created_at"] }}
+                            </small>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty-chart">
+
+                            <strong>
+                                No users yet
+                            </strong>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT PRODUCTS -->
+
+            <div class="recent-activity-card">
+
+                <div class="admin-section-heading">
+
+                    <div>
+
+                        <p class="admin-eyebrow">
+                            LISTINGS
+                        </p>
+
+                        <h2>
+                            Recent Products
+                        </h2>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for('admin_products') }}"
+                    >
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div class="recent-list">
+
+                    {% if recent_products %}
+
+                        {% for product in recent_products %}
+
+                        <div class="recent-list-item">
+
+                            <div class="recent-avatar">
+                                🛍️
+                            </div>
+
+
+                            <div class="recent-item-info">
+
+                                <strong>
+                                    {{ product["name"] }}
+                                </strong>
+
+                                <span>
+                                    {{ product["category"] }}
+                                </span>
+
+                            </div>
+
+
+                            <small>
+                                ${{ product["price"] }}
+                            </small>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty-chart">
+
+                            <strong>
+                                No products yet
+                            </strong>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- QUICK CONTROLS -->
+        <!-- ================================================= -->
+
+        <section class="admin-section">
+
+
+            <div class="admin-section-heading">
+
+                <div>
+
+                    <p class="admin-eyebrow">
+                        ADMIN TOOLS
+                    </p>
+
+                    <h2>
+                        Quick Controls
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions-grid">
+
+
+                <a
+                    href="{{ url_for('admin_users') }}"
+                    class="quick-action-card"
+                >
+
+                    <span class="quick-action-icon">
+                        👥
+                    </span>
+
+                    <strong>
+                        Manage Users
+                    </strong>
+
+                    <small>
+                        View and manage registered accounts.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('admin_products') }}"
+                    class="quick-action-card"
+                >
+
+                    <span class="quick-action-icon">
+                        🛍️
+                    </span>
+
+                    <strong>
+                        Manage Products
+                    </strong>
+
+                    <small>
+                        Feature, inspect or remove listings.
+                    </small>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('products') }}"
+                    class="quick-action-card"
+                >
+
+                    <span class="quick-action-icon">
+                        🌐
+                    </span>
+
+                    <strong>
+                        Open Marketplace
+                    </strong>
+
+                    <small>
+                        View the public marketplace.
+                    </small>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================================================= -->
+    <!-- FOOTER -->
+    <!-- ================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="site-footer-inner">
+
+            <div>
+
+                <strong>
+                    CampusMarket
+                </strong>
+
+                <p>
+                    Built for campus entrepreneurs.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <a
+                    href="{{ url_for('home') }}"
+                >
+                    Marketplace
+                </a>
+
+                <a
+                    href="{{ url_for('logout') }}"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================================================= -->
+    <!-- DYNAMIC BAR SCRIPT -->
+    <!-- ================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* -----------------------------------------
+                   EXISTING DASHBOARD BARS
+                ----------------------------------------- */
+
+                const dynamicBars =
+                    document.querySelectorAll(
+                        "[data-width]"
+                    );
+
+
+                dynamicBars.forEach(
+                    function (bar) {
+
+                        const width =
+                            parseFloat(
+                                bar.dataset.width
+                            );
+
+
+                        if (!isNaN(width)) {
+
+                            const safeWidth =
+                                Math.min(
+                                    Math.max(
+                                        width,
+                                        0
+                                    ),
+                                    100
+                                );
+
+
+                            bar.style.width =
+                                safeWidth + "%";
+
+                        }
+
+                    }
+                );
+
+
+                /* -----------------------------------------
+                   7-DAY GROWTH BARS
+                ----------------------------------------- */
+
+                const growthBars =
+                    document.querySelectorAll(
+                        ".growth-bar"
+                    );
+
+
+                let maximumValue = 0;
+
+
+                growthBars.forEach(
+                    function (bar) {
+
+                        const value =
+                            parseInt(
+                                bar.dataset.value
+                            ) || 0;
+
+
+                        if (
+                            value >
+                            maximumValue
+                        ) {
+
+                            maximumValue =
+                                value;
+
+                        }
+
+                    }
+                );
+
+
+                growthBars.forEach(
+                    function (bar) {
+
+                        const value =
+                            parseInt(
+                                bar.dataset.value
+                            ) || 0;
+
+
+                        let height = 0;
+
+
+                        if (
+                            maximumValue > 0
+                        ) {
+
+                            height =
+                                (
+                                    value
+                                    /
+                                    maximumValue
+                                ) * 100;
+
+                        }
+
+
+                        if (
+                            value > 0
+                            && height < 8
+                        ) {
+
+                            height = 8;
+
+                        }
+
+
+                        bar.style.height =
+                            height + "%";
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

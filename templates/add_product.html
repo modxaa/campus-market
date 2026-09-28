@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sell | Campus Market</title>
+
+    <meta
+        name="description"
+        content="Create a product listing on Campus Market."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="sell-page-body">
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="site-header">
+
+    <div class="site-header-inner">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="site-logo"
+        >
+            Campus<span>Market</span>
+        </a>
+
+
+        <nav class="site-nav">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a
+                href="{{ url_for('add_product') }}"
+                class="active"
+            >
+                Sell
+            </a>
+
+        </nav>
+
+
+        <div class="homepage-header-actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="homepage-login"
+            >
+                Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="homepage-join"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     SELL PAGE
+     ========================================================= -->
+
+<main class="sell-page">
+
+    <section class="sell-hero">
+
+        <div class="sell-hero-inner">
+
+            <span class="sell-eyebrow">
+                SELL ON CAMPUS
+            </span>
+
+            <h1>
+                Create your listing.
+            </h1>
+
+            <p>
+                Add your product, set your price and let other students
+                discover what you're selling.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SELL CONTENT
+         ===================================================== -->
+
+    <section class="sell-content">
+
+        <div class="sell-layout">
+
+
+            <!-- =================================================
+                 FORM
+                 ================================================= -->
+
+            <div class="sell-form-card">
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+
+                    <!-- CSRF PROTECTION -->
+
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+
+
+                    <!-- PRODUCT INFORMATION -->
+
+                    <div class="sell-form-section">
+
+                        <div class="sell-section-number">
+                            01
+                        </div>
+
+                        <div>
+
+                            <span class="sell-section-eyebrow">
+                                LISTING
+                            </span>
+
+                            <h2>
+                                Product information
+                            </h2>
+
+                            <p>
+                                Tell buyers what you're offering.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="sell-field">
+
+                        <label for="name">
+                            Product name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="e.g. Nike Air Force 1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PRICE + CATEGORY -->
+
+                    <div class="sell-field-row">
+
+                        <div class="sell-field">
+
+                            <label for="price">
+                                Price
+                            </label>
+
+                            <div class="sell-input-prefix">
+
+                                <span>
+                                    $
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    placeholder="25"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-field">
+
+                            <label for="category">
+                                Category
+                            </label>
+
+                            <select
+                                id="category"
+                                name="category"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Clothing">
+                                    Clothing
+                                </option>
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Electronics">
+                                    Electronics
+                                </option>
+
+                                <option value="Beauty">
+                                    Beauty
+                                </option>
+
+                                <option value="Shoes">
+                                    Shoes
+                                </option>
+
+                                <option value="Books">
+                                    Books
+                                </option>
+
+                                <option value="Services">
+                                    Services
+                                </option>
+
+                                <option value="Accessories">
+                                    Accessories
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- IMAGE -->
+
+                    <div class="sell-field">
+
+                        <label for="image">
+                            Product image
+                        </label>
+
+                        <div class="sell-upload-box">
+
+                            <input
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
+                            >
+
+                            <div class="sell-upload-content">
+
+                                <div class="sell-upload-icon">
+                                    +
+                                </div>
+
+                                <strong>
+                                    Add a product photo
+                                </strong>
+
+                                <span>
+                                    Use a clear image that shows the
+                                    product properly.
+                                </span>
+
+                                <small>
+                                    JPG, PNG, GIF or WEBP
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="sell-field">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            placeholder="Describe the product, its condition, size, colour or anything buyers should know..."
+                            rows="6"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- CONTACT INFORMATION -->
+
+                    <div class="sell-form-section sell-form-section-contact">
+
+                        <div class="sell-section-number">
+                            02
+                        </div>
+
+                        <div>
+
+                            <span class="sell-section-eyebrow">
+                                CONTACT
+                            </span>
+
+                            <h2>
+                                Contact information
+                            </h2>
+
+                            <p>
+                                Help buyers know where to find you and
+                                how to contact you.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCATION + CONTACT -->
+
+                    <div class="sell-field-row">
+
+                        <div class="sell-field">
+
+                            <label for="location">
+                                Campus / location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                placeholder="e.g. Main Campus"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="sell-field">
+
+                            <label for="contact">
+                                WhatsApp number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="contact"
+                                name="contact"
+                                placeholder="e.g. 0771234567"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+
+                    <div class="sell-submit">
+
+                        <button
+                            type="submit"
+                            class="sell-publish-button"
+                        >
+                            Publish product
+                        </button>
+
+                        <p>
+                            Your listing will appear in the marketplace
+                            after you publish it.
+                        </p>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIDE PANEL
+                 ================================================= -->
+
+            <aside class="sell-side">
+
+                <div class="sell-side-card">
+
+                    <span class="sell-eyebrow">
+                        SELL SMART
+                    </span>
+
+                    <h2>
+                        Make your listing stand out.
+                    </h2>
+
+                    <p>
+                        Good photos, clear descriptions and accurate
+                        information help buyers understand what you're
+                        offering.
+                    </p>
+
+
+                    <div class="sell-tips">
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                01
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Use clear photos
+                                </strong>
+
+                                <p>
+                                    Show the actual product and avoid
+                                    blurry images.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                02
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Be specific
+                                </strong>
+
+                                <p>
+                                    Mention useful details such as
+                                    condition, size and colour.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="sell-tip">
+
+                            <span>
+                                03
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Keep your contact active
+                                </strong>
+
+                                <p>
+                                    Buyers can use your WhatsApp number
+                                    to contact you.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+
+        <div class="footer-brand">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="site-logo"
+            >
+                Campus<span>Market</span>
+            </a>
+
+            <p>
+                Your campus. Your marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Marketplace
+            </h4>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('add_product') }}">
+                Sell
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Account
+            </h4>
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Campus Market
+            </h4>
+
+            <p>
+                Connecting students with products,
+                services and opportunities around campus.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Campus Market.
+            All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | Campus Market</title>
+
+    <meta name="description"
+          content="Campus Market administrator login.">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body class="auth-page-body">
+
+
+<!-- HEADER -->
+
+<header class="site-header">
+
+    <div class="site-header-inner">
+
+        <a href="{{ url_for('home') }}"
+           class="site-logo">
+            Campus<span>Market</span>
+        </a>
+
+
+        <nav class="site-nav">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+        </nav>
+
+
+        <div class="homepage-header-actions">
+
+            <a href="{{ url_for('login') }}"
+               class="homepage-login">
+                User Login
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ADMIN LOGIN -->
+
+<main class="admin-auth-page">
+
+    <section class="admin-auth-container">
+
+
+        <!-- INTRO -->
+
+        <div class="admin-auth-heading">
+
+            <span class="admin-auth-eyebrow">
+                MARKETPLACE ADMIN
+            </span>
+
+            <h1>
+                Admin access.
+            </h1>
+
+            <p>
+                Manage users, products and marketplace activity
+                from one central dashboard.
+            </p>
+
+        </div>
+
+
+
+        <!-- LAYOUT -->
+
+        <div class="admin-auth-layout">
+
+
+            <!-- FORM -->
+
+            <div class="admin-auth-form-card">
+
+                <div class="admin-auth-card-heading">
+
+                    <span>
+                        SECURE ACCESS
+                    </span>
+
+                    <h2>
+                        Administrator Login
+                    </h2>
+
+                    <p>
+                        Enter your administrator credentials
+                        to continue.
+                    </p>
+
+                </div>
+
+
+                {% if error %}
+
+                <div class="auth-error">
+                    {{ error }}
+                </div>
+
+                {% endif %}
+
+
+                <form method="POST">
+
+                    <!-- CSRF PROTECTION -->
+
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+
+
+                    <div class="auth-field">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter admin username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="auth-field">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter admin password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="auth-submit"
+                    >
+                        Enter Dashboard
+                    </button>
+
+                </form>
+
+
+                <div class="admin-auth-back">
+
+                    <span>
+                        Not an administrator?
+                    </span>
+
+                    <a href="{{ url_for('login') }}">
+                        Return to User Login →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- INFORMATION PANEL -->
+
+            <aside class="admin-auth-side">
+
+                <div class="admin-auth-side-card">
+
+                    <span class="admin-auth-side-eyebrow">
+                        ADMINISTRATOR
+                    </span>
+
+                    <h2>
+                        Keep the marketplace moving.
+                    </h2>
+
+                    <p>
+                        Your administration area gives you control
+                        over the people and products using Campus
+                        Market.
+                    </p>
+
+
+                    <div class="admin-auth-features">
+
+
+                        <!-- USERS -->
+
+                        <div class="admin-auth-feature">
+
+                            <span>
+                                01
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Users
+                                </strong>
+
+                                <p>
+                                    View registered marketplace
+                                    accounts and manage users.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PRODUCTS -->
+
+                        <div class="admin-auth-feature">
+
+                            <span>
+                                02
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Products
+                                </strong>
+
+                                <p>
+                                    Review listings and manage
+                                    marketplace products.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- FEATURED -->
+
+                        <div class="admin-auth-feature">
+
+                            <span>
+                                03
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Featured Listings
+                                </strong>
+
+                                <p>
+                                    Highlight selected products
+                                    across the marketplace.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- FOOTER -->
+
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+
+        <div class="footer-brand">
+
+            <a href="{{ url_for('home') }}"
+               class="site-logo">
+                Campus<span>Market</span>
+            </a>
+
+            <p>
+                Your campus. Your marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Marketplace
+            </h4>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('login') }}">
+                User Login
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Administration
+            </h4>
+
+            <a href="{{ url_for('admin_login') }}">
+                Admin Login
+            </a>
+
+            <a href="{{ url_for('login') }}">
+                User Login
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Campus Market
+            </h4>
+
+            <p>
+                Connecting students with products,
+                services and opportunities around campus.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Campus Market. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>

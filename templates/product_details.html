@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ product["name"] }} | Campus Market
+    </title>
+
+    <meta
+        name="description"
+        content="{{ product['name'] }} available on Campus Market."
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body class="product-details-page-body">
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="site-header">
+
+    <div class="site-header-inner">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="site-logo"
+        >
+            Campus<span>Market</span>
+        </a>
+
+
+        <nav class="site-nav">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a
+                href="{{ url_for('products') }}"
+                class="active"
+            >
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('add_product') }}">
+                Sell
+            </a>
+
+        </nav>
+
+
+        <div class="homepage-header-actions">
+
+            {% if session.get("user_id") %}
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="homepage-login"
+                >
+                    Dashboard
+                </a>
+
+                <a
+                    href="{{ url_for('logout') }}"
+                    class="homepage-join"
+                >
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="homepage-login"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="{{ url_for('register') }}"
+                    class="homepage-join"
+                >
+                    Join
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     PRODUCT DETAILS
+     ========================================================= -->
+
+<main class="product-details-main">
+
+    <div class="product-details-container">
+
+
+        <!-- BACK TO SHOP -->
+
+        <a
+            href="{{ url_for('products') }}"
+            class="product-details-back"
+        >
+            ← Back to marketplace
+        </a>
+
+
+        <div class="product-details-layout">
+
+
+            <!-- =================================================
+                 PRODUCT IMAGE
+                 ================================================= -->
+
+            <div class="product-details-gallery">
+
+                <div class="product-details-image">
+
+                    {% if product["image"] %}
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='uploads/' + product['image']
+                            ) }}"
+                            alt="{{ product['name'] }}"
+                        >
+
+                    {% else %}
+
+                        <div class="product-details-no-image">
+
+                            <span>
+                                NO IMAGE
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if product["featured"] %}
+
+                        <span class="product-details-badge">
+                            Featured
+                        </span>
+
+                    {% elif product["interest_count"] > 0 %}
+
+                        <span class="product-details-badge">
+                            Trending
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PRODUCT INFORMATION
+                 ================================================= -->
+
+            <div class="product-details-content">
+
+
+                <!-- CATEGORY -->
+
+                <div class="product-details-category">
+                    {{ product["category"] }}
+                </div>
+
+
+                <!-- PRODUCT NAME -->
+
+                <h1>
+                    {{ product["name"] }}
+                </h1>
+
+
+                <!-- PRICE -->
+
+                <div class="product-details-price">
+                    ${{ "%.2f"|format(product["price"]) }}
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="product-details-description">
+
+                    <span class="product-details-label">
+                        DESCRIPTION
+                    </span>
+
+                    <p>
+                        {{ product["description"] }}
+                    </p>
+
+                </div>
+
+
+                <!-- LISTING INFORMATION -->
+
+                <div class="product-details-info-grid">
+
+
+                    <div class="product-details-info-item">
+
+                        <span>
+                            Location
+                        </span>
+
+                        <strong>
+                            {{ product["location"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="product-details-info-item">
+
+                        <span>
+                            Seller
+                        </span>
+
+                        <strong>
+                            {{ product["seller_phone"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="product-details-info-item">
+
+                        <span>
+                            Contact
+                        </span>
+
+                        <strong>
+                            {{ product["contact"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="product-details-info-item">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+                            {{ product["category"] }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIVITY
+                     ================================================= -->
+
+                <div class="product-details-activity">
+
+                    <div>
+
+                        <span>
+                            Interest
+                        </span>
+
+                        <strong>
+                            {{ product["interest_count"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Sales
+                        </span>
+
+                        <strong>
+                            {{ product["sales_count"] }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SELLER ACTION
+                     ================================================= -->
+
+                <div class="product-details-actions">
+
+                    <a
+                        href="https://wa.me/{{ product['contact'].replace('+', '').replace(' ', '').replace('-', '').replace('(', '').replace(')', '').replace('0', '263', 1) }}?text=Hi%20I%20am%20interested%20in%20your%20{{ product['name']|urlencode }}%20listed%20on%20Campus%20Market."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="product-whatsapp-button"
+                    >
+                        Chat with seller on WhatsApp
+                    </a>
+
+                    <a
+                        href="{{ url_for('products') }}"
+                        class="product-back-button"
+                    >
+                        Continue shopping
+                    </a>
+
+                </div>
+
+
+                <!-- SMALL BUYER NOTE -->
+
+                <div class="product-details-note">
+
+                    <span>
+                        CAMPUS MARKET
+                    </span>
+
+                    <p>
+                        Contact the seller directly to ask about
+                        availability, collection and payment arrangements.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+
+        <div class="footer-brand">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="site-logo"
+            >
+                Campus<span>Market</span>
+            </a>
+
+            <p>
+                Your campus. Your marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Marketplace
+            </h4>
+
+            <a href="{{ url_for('products') }}">
+                Shop
+            </a>
+
+            <a href="{{ url_for('trending') }}">
+                Trending
+            </a>
+
+            <a href="{{ url_for('add_product') }}">
+                Sell
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Account
+            </h4>
+
+            {% if session.get("user_id") %}
+
+                <a href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('logout') }}">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a href="{{ url_for('register') }}">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                Campus Market
+            </h4>
+
+            <p>
+                Connecting students with products,
+                services and opportunities around campus.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Campus Market.
+            All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>
