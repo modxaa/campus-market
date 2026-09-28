@@ -33,24 +33,68 @@ class PostgresConnection:
 
         from psycopg2.extras import DictCursor
 
-        # Convert SQLite-style placeholders (?) to
-        # PostgreSQL placeholders (%s).
+        # -------------------------------------------------
+        # Convert SQLite placeholders to PostgreSQL
+        # -------------------------------------------------
+
         query = query.replace("?", "%s")
+
+        # -------------------------------------------------
+        # Convert SQLite date arithmetic to PostgreSQL
+        #
+        # SQLite:
+        # date('now', '-6 days')
+        #
+        # PostgreSQL:
+        # CURRENT_DATE - 6
+        # -------------------------------------------------
+
+        query = query.replace(
+            "date('now', '-6 days')",
+            "CURRENT_DATE - 6"
+        )
+
+        # -------------------------------------------------
+        # PostgreSQL cursor
+        #
+        # DictCursor supports both:
+        #
+        # row[0]
+        # row["column_name"]
+        # -------------------------------------------------
 
         cursor = self.connection.cursor(
             cursor_factory=DictCursor
         )
 
         if params is None:
+
             cursor.execute(query)
+
         else:
-            cursor.execute(query, params)
+
+            cursor.execute(
+                query,
+                params
+            )
 
         return cursor
 
-    def executemany(self, query, params_list):
+    def executemany(
+        self,
+        query,
+        params_list
+    ):
 
-        query = query.replace("?", "%s")
+        query = query.replace(
+            "?",
+            "%s"
+        )
+
+        query = query.replace(
+            "date('now', '-6 days')",
+            "CURRENT_DATE - 6"
+        )
 
         cursor = self.connection.cursor()
 
@@ -62,12 +106,15 @@ class PostgresConnection:
         return cursor
 
     def commit(self):
+
         self.connection.commit()
 
     def rollback(self):
+
         self.connection.rollback()
 
     def close(self):
+
         self.connection.close()
 
 
@@ -78,7 +125,8 @@ class PostgresConnection:
 def get_db_connection():
 
     # =====================================================
-    # PRODUCTION / RENDER → POSTGRESQL
+    # RENDER / PRODUCTION
+    # POSTGRESQL
     # =====================================================
 
     if DATABASE_URL:
@@ -95,26 +143,27 @@ def get_db_connection():
 
 
     # =====================================================
-    # LOCAL DEVELOPMENT → SQLITE
+    # LOCAL DEVELOPMENT
+    # SQLITE
     # =====================================================
 
     connection = sqlite3.connect(
         DATABASE
     )
 
-    # Enable foreign-key enforcement.
+    # Enable foreign keys.
     connection.execute(
         "PRAGMA foreign_keys = ON"
     )
 
-    # Allow rows to be accessed using column names:
-    #
-    # row["phone"]
+    # Allow:
+
     # row["id"]
-    #
-    # while normal SQLite numeric access also works:
-    #
+
+    # and:
+
     # row[0]
+
     connection.row_factory = sqlite3.Row
 
     return connection
@@ -333,7 +382,7 @@ def create_tables():
 
 
     # =====================================================
-    # SAVE CHANGES
+    # SAVE
     # =====================================================
 
     connection.commit()
