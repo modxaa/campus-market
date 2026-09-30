@@ -66,7 +66,6 @@ app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")
-SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 SUPABASE_BUCKET = "product-images"
 
 
@@ -158,7 +157,6 @@ def upload_product_image(image):
             upload_url,
             headers={
                 "apikey": SUPABASE_SECRET_KEY,
-                "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
                 "Content-Type": content_type,
                 "x-upsert": "false"
             },
