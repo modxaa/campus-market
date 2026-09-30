@@ -495,10 +495,7 @@
                                 {% if product["image"] %}
 
                                     <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename='uploads/' + product['image']
-                                        ) }}"
+                                        src="{% if product['image'].startswith('http') %}{{ product['image'] }}{% else %}{{ url_for('static', filename='uploads/' + product['image']) }}{% endif %}"
                                         alt="{{ product['name'] }}"
                                         class="product-image"
                                     >

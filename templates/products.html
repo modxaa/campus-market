@@ -155,9 +155,11 @@
                 </span>
 
                 {% if search %}
+
                     <span class="shop-current-search">
                         Search: "{{ search }}"
                     </span>
+
                 {% endif %}
 
             </div>
@@ -296,10 +298,7 @@
                                 {% if product['image'] %}
 
                                     <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename='uploads/' + product['image']
-                                        ) }}"
+                                        src="{% if product['image'].startswith('http') %}{{ product['image'] }}{% else %}{{ url_for('static', filename='uploads/' + product['image']) }}{% endif %}"
                                         alt="{{ product['name'] }}"
                                         class="product-image"
                                     >
@@ -307,9 +306,11 @@
                                 {% else %}
 
                                     <div class="product-image-placeholder">
+
                                         <span>
                                             NO IMAGE
                                         </span>
+
                                     </div>
 
                                 {% endif %}

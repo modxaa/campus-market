@@ -28,6 +28,7 @@
         </nav>
 
         <div class="homepage-header-actions">
+
             <a href="{{ url_for('dashboard') }}"
                class="homepage-login">
                 Dashboard
@@ -37,6 +38,7 @@
                class="homepage-join">
                 Logout
             </a>
+
         </div>
 
     </div>
@@ -52,6 +54,7 @@
         <div class="my-products-hero-inner">
 
             <div>
+
                 <span class="my-products-eyebrow">
                     SELLER CENTER
                 </span>
@@ -64,6 +67,7 @@
                     Manage your products, update your listings
                     and keep your campus shop looking fresh.
                 </p>
+
             </div>
 
             <a href="{{ url_for('add_product') }}"
@@ -83,22 +87,31 @@
         <div class="my-products-summary">
 
             <div>
+
                 <span class="my-products-summary-label">
                     YOUR LISTINGS
                 </span>
 
                 <h2>
+
                     {% if products %}
+
                         {{ products|length }}
+
                         {% if products|length == 1 %}
                             Product
                         {% else %}
                             Products
                         {% endif %}
+
                     {% else %}
+
                         0 Products
+
                     {% endif %}
+
                 </h2>
+
             </div>
 
             <a href="{{ url_for('products') }}"
@@ -128,10 +141,7 @@
                     {% if product["image"] %}
 
                     <img
-                        src="{{ url_for(
-                            'static',
-                            filename='uploads/' + product['image']
-                        ) }}"
+                        src="{% if product['image'].startswith('http') %}{{ product['image'] }}{% else %}{{ url_for('static', filename='uploads/' + product['image']) }}{% endif %}"
                         alt="{{ product['name'] }}"
                     >
 
@@ -193,19 +203,28 @@
                     <div class="my-product-details">
 
                         <div>
-                            <span>LOCATION</span>
+
+                            <span>
+                                LOCATION
+                            </span>
 
                             <strong>
                                 {{ product["location"] }}
                             </strong>
+
                         </div>
 
+
                         <div>
-                            <span>CONTACT</span>
+
+                            <span>
+                                CONTACT
+                            </span>
 
                             <strong>
                                 {{ product["contact"] }}
                             </strong>
+
                         </div>
 
                     </div>
@@ -216,19 +235,28 @@
                     <div class="my-product-stats">
 
                         <div>
-                            <span>INTEREST</span>
+
+                            <span>
+                                INTEREST
+                            </span>
 
                             <strong>
                                 {{ product["interest_count"] }}
                             </strong>
+
                         </div>
 
+
                         <div>
-                            <span>SALES</span>
+
+                            <span>
+                                SALES
+                            </span>
 
                             <strong>
                                 {{ product["sales_count"] }}
                             </strong>
+
                         </div>
 
                     </div>
@@ -270,9 +298,12 @@
                                 'Are you sure you want to delete this product?'
                             );"
                         >
-                        <input type="hidden"
-       name="csrf_token"
-       value="{{ csrf_token() }}">
+
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="{{ csrf_token() }}"
+                            >
 
                             <button
                                 type="submit"
@@ -283,7 +314,9 @@
 
                         </form>
 
+
                     </div>
+
 
                 </div>
 
@@ -351,7 +384,9 @@
 
         <div class="footer-column">
 
-            <h4>Marketplace</h4>
+            <h4>
+                Marketplace
+            </h4>
 
             <a href="{{ url_for('products') }}">
                 Shop
@@ -370,7 +405,9 @@
 
         <div class="footer-column">
 
-            <h4>Account</h4>
+            <h4>
+                Account
+            </h4>
 
             <a href="{{ url_for('dashboard') }}">
                 Dashboard
@@ -389,7 +426,9 @@
 
         <div class="footer-column">
 
-            <h4>Campus Market</h4>
+            <h4>
+                Campus Market
+            </h4>
 
             <p>
                 Connecting students with products,
@@ -410,6 +449,7 @@
     </div>
 
 </footer>
+
 
 </body>
 </html>

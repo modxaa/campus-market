@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import httpx
+
 
 # =========================
 # LOAD ENVIRONMENT VARIABLES
@@ -59,6 +61,36 @@ app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 
 
 # =========================
+# SUPABASE STORAGE
+# =========================
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SECRET_KEY = os.getenv("SUPABASE_SECRET_KEY")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+SUPABASE_BUCKET = "product-images"
+
+
+def supabase_headers(content_type=None):
+
+    headers = {
+        "apikey": SUPABASE_SECRET_KEY
+    }
+
+    if content_type:
+        headers["Content-Type"] = content_type
+
+    return headers
+
+
+def supabase_storage_configured():
+
+    return bool(
+        SUPABASE_URL
+        and SUPABASE_SECRET_KEY
+    )
+
+
+# =========================
 # IMAGE UPLOAD SETTINGS
 # =========================
 
@@ -96,6 +128,118 @@ def create_safe_filename(filename):
     # two sellers cannot overwrite each other's uploaded images.
     extension = filename.rsplit(".", 1)[1].lower()
     return f"{uuid.uuid4().hex}.{extension}"
+
+
+def upload_product_image(image):
+
+    """Upload an image to Supabase Storage.
+
+    The current Supabase sb_secret_ API keys are API keys, not JWTs.
+    Therefore this backend sends the key only in the ``apikey`` header
+    instead of ``Authorization: Bearer``.
+    """
+
+    safe_name = create_safe_filename(
+        secure_filename(image.filename)
+    )
+
+    if supabase_storage_configured():
+
+        file_bytes = image.read()
+
+        content_type = image.mimetype or "application/octet-stream"
+
+        upload_url = (
+            f"{SUPABASE_URL}/storage/v1/object/"
+            f"{SUPABASE_BUCKET}/{safe_name}"
+        )
+
+        response = httpx.post(
+            upload_url,
+            headers={
+                "apikey": SUPABASE_SECRET_KEY,
+                "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
+                "Content-Type": content_type,
+                "x-upsert": "false"
+            },
+            content=file_bytes,
+            timeout=30
+        )
+
+        print("===== SUPABASE UPLOAD DEBUG =====")
+        print("SUPABASE STATUS:", response.status_code)
+        print("SUPABASE RESPONSE:", response.text)
+        print("=================================")
+
+        if response.status_code >= 400:
+            raise Exception(
+                f"Supabase returned HTTP {response.status_code}: "
+                f"{response.text}"
+            )
+
+        return (
+            f"{SUPABASE_URL}/storage/v1/object/public/"
+            f"{SUPABASE_BUCKET}/{safe_name}"
+        )
+
+    image.save(
+        os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            safe_name
+        )
+    )
+
+    return safe_name
+
+
+def delete_product_image(image_value):
+
+    """Delete a stored product image when possible."""
+
+    if not image_value:
+        return
+
+    if supabase_storage_configured() and image_value.startswith(SUPABASE_URL):
+
+        marker = f"/storage/v1/object/public/{SUPABASE_BUCKET}/"
+
+        if marker in image_value:
+            storage_path = image_value.split(marker, 1)[1]
+
+            try:
+                delete_url = (
+                    f"{SUPABASE_URL}/storage/v1/object/"
+                    f"{SUPABASE_BUCKET}"
+                )
+
+                response = httpx.request(
+                    "DELETE",
+                    delete_url,
+                    headers=supabase_headers("application/json"),
+                    json={"prefixes": [storage_path]},
+                    timeout=30
+                )
+
+                response.raise_for_status()
+
+            except Exception as error:
+                print(
+                    f"Supabase image delete failed: {type(error).__name__}: {error}",
+                    flush=True
+                )
+
+        return
+
+    local_path = os.path.join(
+        app.config["UPLOAD_FOLDER"],
+        image_value
+    )
+
+    if os.path.isfile(local_path):
+        try:
+            os.remove(local_path)
+        except OSError:
+            pass
 
 
 # =========================
@@ -766,13 +910,13 @@ def delete_user(user_id):
     connection = get_db_connection()
 
 
-    connection.execute(
-        """
-        DELETE FROM products
-        WHERE seller_id = ?
-        """,
+    products_to_delete = connection.execute(
+        "SELECT image FROM products WHERE seller_id = ?",
         (user_id,)
-    )
+    ).fetchall()
+
+    for product in products_to_delete:
+        delete_product_image(product["image"])
 
 
     connection.execute(
@@ -893,6 +1037,14 @@ def delete_product(product_id):
 
     connection = get_db_connection()
 
+
+    product = connection.execute(
+        "SELECT image FROM products WHERE id = ?",
+        (product_id,)
+    ).fetchone()
+
+    if product:
+        delete_product_image(product["image"])
 
     connection.execute(
         """
@@ -1144,17 +1296,14 @@ def add_product():
                 )
 
 
-            image_filename = create_safe_filename(
-                secure_filename(image.filename)
-            )
-
-
-            image.save(
-                os.path.join(
-                    app.config["UPLOAD_FOLDER"],
-                    image_filename
+            try:
+                image_filename = upload_product_image(image)
+            except Exception as error:
+                print(
+                    f"Supabase image upload failed: {type(error).__name__}: {error}",
+                    flush=True
                 )
-            )
+                return "Image upload failed. Please try again."
 
 
         connection = get_db_connection()
@@ -1289,17 +1438,15 @@ def edit_product(product_id):
                 )
 
 
-            image_filename = create_safe_filename(
-                secure_filename(image.filename)
-            )
-
-
-            image.save(
-                os.path.join(
-                    app.config["UPLOAD_FOLDER"],
-                    image_filename
+            try:
+                image_filename = upload_product_image(image)
+            except Exception as error:
+                print(
+                    f"Supabase image upload failed: {type(error).__name__}: {error}",
+                    flush=True
                 )
-            )
+                connection.close()
+                return "Image upload failed. Please try again."
 
 
         connection.execute(
@@ -1371,6 +1518,18 @@ def delete_my_product(product_id):
 
     connection = get_db_connection()
 
+
+    product = connection.execute(
+        """
+        SELECT image
+        FROM products
+        WHERE id = ? AND seller_id = ?
+        """,
+        (product_id, session["user_id"])
+    ).fetchone()
+
+    if product:
+        delete_product_image(product["image"])
 
     connection.execute(
         """
